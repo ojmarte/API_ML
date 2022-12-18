@@ -3,14 +3,17 @@ import pickle
 import os
 import glob
 import sys
-sys.path.append('../titanic_challenge/src')
 
 from pydantic import BaseModel
-from pipeline import create_preprocessing_pipeline, create_feature_engineering_pipeline, create_ml_pipeline, prepare_submission, create_single_preprocessing_pipeline
-
 from fastapi import FastAPI
+from download_s3_model import download_s3_filemodel
 
-MODEL_PATH = '/Users/alexanderholguin/MLPython/titanic_challenge/data'
+BUCKET_NAME = 'titanic-models-bucket' # replace with your bucket name
+KEY = 'models/'
+
+download_s3_filemodel(BUCKET_NAME, KEY)
+
+MODEL_PATH = '/home/ec2-user/environment/api_app/API'
 
 model_list = glob.glob(os.path.join(MODEL_PATH, 'dt_classifier_acc_*'))
 acc_list = [int(model.split('/')[-1].replace('dt_classifier_acc_', '')) for model in model_list]
@@ -19,22 +22,6 @@ model = pickle.load(open(model_path, 'rb'))
 
 app = FastAPI()
 
-# def run_ml_model(data: dict):
-#     train_path = os.path.join(path, 'train.csv')
-#     test_path = os.path.join(path, 'test.csv')
-#     submission_path = os.path.join(path, 'submission.csv')
-
-#     train_df = create_single_preprocessing_pipeline(data, True)
-#     features_df = create_feature_engineering_pipeline(train_df)
-#     model, training_acc = create_ml_pipeline(features_df)
-#     pickle.dump(model, open(f'dt_classifier_acc_{round(training_acc)}', 'wb'))
-
-#     return prepare_submission(model, test_path, submission_path)
-
-# train.csv
-# test.csv
-# submission.csv
-# PassengerId  Pclass  Sex  Age  Fare  Embarked  Deck  Title  Relatives  Age_Class
 class TictanicData(BaseModel):
     pclass: int
     sex: int

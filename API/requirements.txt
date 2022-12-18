@@ -1,0 +1,6 @@
+pydantic
+fastapi
+scikit-learn
+uvicorn
+boto3
+botocore
