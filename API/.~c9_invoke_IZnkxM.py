@@ -50,3 +50,4 @@ def get_prediction(data: TictanicData):
         return { 'prediction': 'Survived' }
 
     return { 'prediction': ' Not Survived' }
+

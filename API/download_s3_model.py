@@ -11,7 +11,7 @@ def download_s3_filemodel(BUCKET_NAME, KEY):
     
     for s3_object in bucket.objects.all():
         for key in bucket.objects.all():
-            x = re.search("^models/*", key.key)
+            x = re.search("^models/dt_classifier_acc_*", key.key)
             if x:
                 models.append(key.key)
     
